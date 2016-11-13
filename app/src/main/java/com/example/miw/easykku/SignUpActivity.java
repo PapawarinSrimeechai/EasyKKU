@@ -17,6 +17,10 @@ import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import org.jibble.simpleftp.SimpleFTP;
+
+import java.io.File;
+
 public class SignUpActivity extends AppCompatActivity {
 
     //Explicit
@@ -82,7 +86,21 @@ public class SignUpActivity extends AppCompatActivity {
     } //Main method
 
     private void uploadImageToServer() {
+        //change Policy
+        StrictMode.ThreadPolicy threadPolicy = new StrictMode.ThreadPolicy.Builder()
+                .permitAll().build();
+        StrictMode.setThreadPolicy(threadPolicy);
 
+        try {
+                SimpleFTP simpleFTP = new SimpleFTP();
+                simpleFTP.connect("ftp.swiftcodingthai.com",21,"kku@swiftcodingthai.com","Abc12345");
+                simpleFTP.bin();
+                simpleFTP.cwd("Image");
+                simpleFTP.stor(new File(imagePathString));
+                simpleFTP.disconnect();
+        } catch (Exception e) {
+            Log.d("12novV1","e simple FTP ==> "+e.toString());
+        }
     }
 
     @Override
